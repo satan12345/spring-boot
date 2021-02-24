@@ -38,5 +38,5 @@ inline fun <reified T : Any> runApplication(vararg args: String): ConfigurableAp
  * @author Sebastien Deleuze
  * @since 2.0.0
  */
-inline fun <reified T : Any> runApplication(vararg args: String, init: SpringApplication.() -> Unit): ConfigurableApplicationContext =
-		SpringApplication(T::class.java).apply(init).run(*args)
+//inline fun <reified T : Any> runApplication(vararg args: String, init: SpringApplication.() -> Unit): ConfigurableApplicationContext =
+//		SpringApplication(T::class.java).apply(init).run(*args)

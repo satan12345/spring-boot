@@ -25,6 +25,8 @@ class Hibernate52ApplicationTests {
 
 	@Test
 	void contextLoads() {
+
+		System.out.println("hibernate test....");
 	}
 
 }
