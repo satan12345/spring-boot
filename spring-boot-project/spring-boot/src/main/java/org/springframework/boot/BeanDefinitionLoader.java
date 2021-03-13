@@ -56,7 +56,9 @@ import org.springframework.util.StringUtils;
  * @see #setBeanNameGenerator(BeanNameGenerator)
  */
 class BeanDefinitionLoader {
-
+	/**
+	 * 配置类
+	 */
 	private final Object[] sources;
 
 	private final AnnotatedBeanDefinitionReader annotatedReader;
@@ -130,9 +132,15 @@ class BeanDefinitionLoader {
 		return count;
 	}
 
+	/**
+	 * 加载配置类
+	 * @param source
+	 * @return
+	 */
 	private int load(Object source) {
 		Assert.notNull(source, "Source must not be null");
 		if (source instanceof Class<?>) {
+			//是Class 类型
 			return load((Class<?>) source);
 		}
 		if (source instanceof Resource) {
@@ -153,7 +161,9 @@ class BeanDefinitionLoader {
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
 			load(loader);
 		}
+		//判断是否标记了@Component注解
 		if (isComponent(source)) {
+			//标记了@Component注解 注册到上下文对象中
 			this.annotatedReader.register(source);
 			return 1;
 		}

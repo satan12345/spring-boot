@@ -34,7 +34,7 @@ import org.springframework.util.ReflectionUtils;
 class SpringApplicationRunListeners {
 
 	private final Log log;
-
+	//事件监听器
 	private final List<SpringApplicationRunListener> listeners;
 
 	SpringApplicationRunListeners(Log log, Collection<? extends SpringApplicationRunListener> listeners) {

@@ -7,6 +7,7 @@
 		<artifactId>spring-boot-smoke-tests</artifactId>
 		<version>${revision}</version>
 	</parent>
+
 	<artifactId>spring-boot-smoke-test-simple</artifactId>
 	<name>Spring Boot Simple Smoke Test</name>
 	<description>Spring Boot Simple Smoke Test</description>

@@ -12,6 +12,7 @@
 	<packaging>pom</packaging>
 	<name>Spring Boot Tests</name>
 	<description>Spring Boot Test</description>
+
 	<properties>
 		<main.basedir>${basedir}/..</main.basedir>
 	</properties>
