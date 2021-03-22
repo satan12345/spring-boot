@@ -52,8 +52,17 @@ import org.springframework.data.repository.Repository;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
+/**
+ * 标识为一个配置类
+ */
 @SpringBootConfiguration
+/**
+ * 自动装配的注解
+ */
 @EnableAutoConfiguration
+/**
+ * 包扫描注解
+ */
 @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
 		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 public @interface SpringBootApplication {
