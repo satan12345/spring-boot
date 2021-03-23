@@ -46,13 +46,18 @@ import org.springframework.core.env.Environment;
 @EnableConfigurationProperties(ServerProperties.class)
 public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 
-	/**
+	/** tomcat web服务器的工厂定制器
 	 * Nested configuration if Tomcat is being used.
 	 */
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass({ Tomcat.class, UpgradeProtocol.class })
 	public static class TomcatWebServerFactoryCustomizerConfiguration {
-
+		/**
+		 * 导入组件
+		 * @param environment
+		 * @param serverProperties
+		 * @return
+		 */
 		@Bean
 		public TomcatWebServerFactoryCustomizer tomcatWebServerFactoryCustomizer(Environment environment,
 				ServerProperties serverProperties) {

@@ -67,7 +67,13 @@ class ServletWebServerFactoryConfiguration {
 	@ConditionalOnClass({ Servlet.class, Tomcat.class, UpgradeProtocol.class })
 	@ConditionalOnMissingBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
 	static class EmbeddedTomcat {
-
+		/**
+		 * 导入tomcatServletWrbServerFactory
+		 * @param connectorCustomizers
+		 * @param contextCustomizers
+		 * @param protocolHandlerCustomizers
+		 * @return
+		 */
 		@Bean
 		TomcatServletWebServerFactory tomcatServletWebServerFactory(
 				ObjectProvider<TomcatConnectorCustomizer> connectorCustomizers,

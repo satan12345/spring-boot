@@ -42,7 +42,7 @@ class OAuth2ResourceServerOpaqueTokenConfiguration {
 
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnMissingBean(OpaqueTokenIntrospector.class)
-	static class OpaqueTokenIntrospectionClientConfiguration {
+	static   class OpaqueTokenIntrospectionClientConfiguration {
 
 		@Bean
 		@ConditionalOnProperty(name = "spring.security.oauth2.resourceserver.opaquetoken.introspection-uri")

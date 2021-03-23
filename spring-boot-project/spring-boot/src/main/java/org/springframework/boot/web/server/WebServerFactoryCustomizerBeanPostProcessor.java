@@ -52,14 +52,29 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 		this.beanFactory = (ListableBeanFactory) beanFactory;
 	}
 
+	/**
+	 * 初始化之前调用
+	 * @param bean
+	 * @param beanName
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		if (bean instanceof WebServerFactory) {
+			//在初始化之前对webServer进行定制
 			postProcessBeforeInitialization((WebServerFactory) bean);
 		}
 		return bean;
 	}
 
+	/**
+	 * 初始化之后调用
+	 * @param bean
+	 * @param beanName
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		return bean;
@@ -67,6 +82,10 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 	@SuppressWarnings("unchecked")
 	private void postProcessBeforeInitialization(WebServerFactory webServerFactory) {
+		/**
+		 * 容器中获取所有的定制器
+		 * 依次调用定制方法 对webServer进行定制
+		 */
 		LambdaSafe.callbacks(WebServerFactoryCustomizer.class, getCustomizers(), webServerFactory)
 				.withLogger(WebServerFactoryCustomizerBeanPostProcessor.class)
 				.invoke((customizer) -> customizer.customize(webServerFactory));
