@@ -294,7 +294,13 @@ public class SpringApplication {
 		 * 从META-INF/spring.factories配置文件中加载 响应的组件
 		 */
 		this.bootstrappers = new ArrayList<>(getSpringFactoriesInstances(Bootstrapper.class));
+		/**
+		 * 设置初始化器
+		 */
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
+		/**
+		 * 设置监听器
+		 */
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		/**
 		 * 根据调用栈推断主类
@@ -324,22 +330,37 @@ public class SpringApplication {
 	 * @return a running {@link ApplicationContext}
 	 */
 	public ConfigurableApplicationContext run(String... args) {
+		//计时对象
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
+
 		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
+		//声明容器
 		ConfigurableApplicationContext context = null;
+		//设置头属性
 		configureHeadlessProperty();
+		//META-INF/spring.factories配置文件中获取 SpringApplicationRunListener的对象
 		SpringApplicationRunListeners listeners = getRunListeners(args);
+
 		listeners.starting(bootstrapContext, this.mainApplicationClass);
 		try {
+			//封装参数
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+			//准备环境
 			ConfigurableEnvironment environment = prepareEnvironment(listeners, bootstrapContext, applicationArguments);
+			//设置忽略的bean信息
 			configureIgnoreBeanInfo(environment);
+			//打印banner
 			Banner printedBanner = printBanner(environment);
+			//创建容器
 			context = createApplicationContext();
 			context.setApplicationStartup(this.applicationStartup);
+			//准备上下文
 			prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);
-			//刷新容器
+			/**
+			 * TODO 刷新容器
+			 * 调用spring创建IOC容器
+			 */
 			refreshContext(context);
 			afterRefresh(context, applicationArguments);
 			stopWatch.stop();
@@ -373,6 +394,7 @@ public class SpringApplication {
 	private ConfigurableEnvironment prepareEnvironment(SpringApplicationRunListeners listeners,
 			DefaultBootstrapContext bootstrapContext, ApplicationArguments applicationArguments) {
 		// Create and configure the environment
+		//创建并配置环境
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
 		ConfigurationPropertySources.attach(environment);
@@ -462,7 +484,13 @@ public class SpringApplication {
 	private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, Object... args) {
 		ClassLoader classLoader = getClassLoader();
 		// Use names and ensure unique to protect against duplicates
+		/**
+		 * 从META/spring.factories配置文件中 获取指定key的bean的全类名集合
+		 */
 		Set<String> names = new LinkedHashSet<>(SpringFactoriesLoader.loadFactoryNames(type, classLoader));
+		/**
+		 * 根据名称实例化bean 排序返回
+		 */
 		List<T> instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);
 		AnnotationAwareOrderComparator.sort(instances);
 		return instances;
@@ -1323,7 +1351,14 @@ public class SpringApplication {
 	 * @return the running {@link ApplicationContext}
 	 */
 	public static ConfigurableApplicationContext run(Class<?>[] primarySources, String[] args) {
-		return new SpringApplication(primarySources).run(args);
+		/**
+		 * 创建对象
+		 */
+		SpringApplication springApplication = new SpringApplication(primarySources);
+		/**
+		 * 运行
+		 */
+		return springApplication.run(args);
 	}
 
 	/**

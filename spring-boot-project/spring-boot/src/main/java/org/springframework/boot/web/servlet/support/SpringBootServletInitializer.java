@@ -92,6 +92,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 		// Logger initialization is deferred in case an ordered
 		// LogServletContextInitializer is being used
 		this.logger = LogFactory.getLog(getClass());
+		//创建父容器
 		WebApplicationContext rootApplicationContext = createRootApplicationContext(servletContext);
 		if (rootApplicationContext != null) {
 			servletContext.addListener(new SpringBootContextLoaderListener(rootApplicationContext, servletContext));
@@ -135,7 +136,9 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 		}
 		builder.initializers(new ServletContextApplicationContextInitializer(servletContext));
 		builder.contextFactory((webApplicationType) -> new AnnotationConfigServletWebServerApplicationContext());
+		//方法重写 保存主配置类
 		builder = configure(builder);
+
 		builder.listeners(new WebEnvironmentPropertySourceInitializer(servletContext));
 		SpringApplication application = builder.build();
 		if (application.getAllSources().isEmpty()
@@ -150,6 +153,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 			application.addPrimarySources(Collections.singleton(ErrorPageFilterConfiguration.class));
 		}
 		application.setRegisterShutdownHook(false);
+		//执行
 		return run(application);
 	}
 

@@ -158,8 +158,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		try {
 			//创建webServer
 			createWebServer();
-		}
-		catch (Throwable ex) {
+		}catch (Throwable ex) {
 			throw new ApplicationContextException("Unable to start web server", ex);
 		}
 	}

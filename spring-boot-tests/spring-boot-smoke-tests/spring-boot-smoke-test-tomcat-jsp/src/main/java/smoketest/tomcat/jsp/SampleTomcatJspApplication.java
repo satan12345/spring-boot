@@ -21,6 +21,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+/**
+ *  war包方式启动spring-boot
+ */
 @SpringBootApplication
 public class SampleTomcatJspApplication extends SpringBootServletInitializer {
 
