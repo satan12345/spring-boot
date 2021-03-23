@@ -79,6 +79,9 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
+/**
+ * 自动导入
+ */
 @AutoConfigurationPackage
 /**
  * 导入组件

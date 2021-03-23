@@ -57,6 +57,7 @@ public abstract class AutoConfigurationPackages {
 	/**
 	 * Determine if the auto-configuration base packages for the given bean factory are
 	 * available.
+	 *
 	 * @param beanFactory the source bean factory
 	 * @return true if there are auto-config packages available
 	 */
@@ -66,6 +67,7 @@ public abstract class AutoConfigurationPackages {
 
 	/**
 	 * Return the auto-configuration base packages for the given bean factory.
+	 *
 	 * @param beanFactory the source bean factory
 	 * @return a list of auto-configuration packages
 	 * @throws IllegalStateException if auto-configuration is not enabled
@@ -73,8 +75,7 @@ public abstract class AutoConfigurationPackages {
 	public static List<String> get(BeanFactory beanFactory) {
 		try {
 			return beanFactory.getBean(BEAN, BasePackages.class).get();
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			throw new IllegalStateException("Unable to retrieve @EnableAutoConfiguration base packages");
 		}
 	}
@@ -87,15 +88,15 @@ public abstract class AutoConfigurationPackages {
 	 * you don't call this method directly, but instead rely on the default convention
 	 * where the package name is set from your {@code @EnableAutoConfiguration}
 	 * configuration class or classes.
-	 * @param registry the bean definition registry
+	 *
+	 * @param registry     the bean definition registry
 	 * @param packageNames the package names to set
 	 */
 	public static void register(BeanDefinitionRegistry registry, String... packageNames) {
 		if (registry.containsBeanDefinition(BEAN)) {
 			BasePackagesBeanDefinition beanDefinition = (BasePackagesBeanDefinition) registry.getBeanDefinition(BEAN);
 			beanDefinition.addBasePackages(packageNames);
-		}
-		else {
+		} else {
 			registry.registerBeanDefinition(BEAN, new BasePackagesBeanDefinition(packageNames));
 		}
 	}
@@ -108,7 +109,9 @@ public abstract class AutoConfigurationPackages {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-			register(registry, new PackageImports(metadata).getPackageNames().toArray(new String[0]));
+			//获取扫描的包路径
+			String[] packagePathArray = new PackageImports(metadata).getPackageNames().toArray(new String[0]);
+			register(registry, packagePathArray);
 		}
 
 		@Override
@@ -126,13 +129,19 @@ public abstract class AutoConfigurationPackages {
 		private final List<String> packageNames;
 
 		PackageImports(AnnotationMetadata metadata) {
+			//获取AutoConfigurationPackage 注解的属性信息
 			AnnotationAttributes attributes = AnnotationAttributes
 					.fromMap(metadata.getAnnotationAttributes(AutoConfigurationPackage.class.getName(), false));
+			//获取扫描的包名称
 			List<String> packageNames = new ArrayList<>(Arrays.asList(attributes.getStringArray("basePackages")));
-			for (Class<?> basePackageClass : attributes.getClassArray("basePackageClasses")) {
+			//获取包扫描的类
+			Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
+			for (Class<?> basePackageClass : basePackageClasses) {
+
 				packageNames.add(basePackageClass.getPackage().getName());
 			}
 			if (packageNames.isEmpty()) {
+				//当不存在 则获取注解的的包路径
 				packageNames.add(ClassUtils.getPackageName(metadata.getClassName()));
 			}
 			this.packageNames = Collections.unmodifiableList(packageNames);
@@ -189,8 +198,7 @@ public abstract class AutoConfigurationPackages {
 								+ "in the default package. Automatic @Repository and "
 								+ "@Entity scanning is not enabled.");
 					}
-				}
-				else {
+				} else {
 					if (logger.isDebugEnabled()) {
 						String packageNames = StringUtils.collectionToCommaDelimitedString(this.packages);
 						logger.debug("@EnableAutoConfiguration was declared on a class in the package '" + packageNames
