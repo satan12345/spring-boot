@@ -80,7 +80,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 @Documented
 @Inherited
 /**
- * 自动导入
+ * 扫描导入本项目的bean
  */
 @AutoConfigurationPackage
 /**
